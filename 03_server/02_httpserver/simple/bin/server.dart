@@ -40,7 +40,7 @@ Future<void> main() async {
 
 // Serve files from the file system.
 final _staticHandler =
-    shelf_static.createStaticHandler('public', defaultDocument: 'index.html');
+    shelf_static.createStaticHandler('_public', defaultDocument: 'index.html');
 
 // Router instance to handler requests.
 final _router = shelf_router.Router()
@@ -55,14 +55,14 @@ final _router = shelf_router.Router()
   ..post('/register', (Request request) async {
     final String s = await request.readAsString();
     // print(s);
-    File f = File('public/db.txt');
+    File f = File('_public/db.txt');
     f.writeAsString('$s\n', mode: FileMode.append);
     return Response.seeOther('/');
   })
   ..post('/login', (Request request) async {
     final String s = await request.readAsString();
     // print(s);
-    Stream lines = File('public/db.txt')
+    Stream lines = File('_public/db.txt')
         .openRead()
         .transform(utf8.decoder)
         .transform(const LineSplitter());
@@ -75,7 +75,7 @@ final _router = shelf_router.Router()
           _jsonEncode({'state': '登录成功'}),
           headers: {
             ..._jsonHeaders,
-            'Cache-Control': 'public, max-age=604800, immutable',
+            'Cache-Control': '_public, max-age=604800, immutable',
           },
         );
       }
@@ -85,7 +85,7 @@ final _router = shelf_router.Router()
         _jsonEncode({'state': '登录成功'}),
         headers: {
           ..._jsonHeaders,
-          'Cache-Control': 'public, max-age=604800, immutable',
+          'Cache-Control': '_public, max-age=604800, immutable',
         },
       );
     }
@@ -109,7 +109,7 @@ Response _sumHandler(Request request, String a, String b) {
     _jsonEncode({'a': aNum, 'b': bNum, 'sum': aNum + bNum}),
     headers: {
       ..._jsonHeaders,
-      'Cache-Control': 'public, max-age=604800, immutable',
+      'Cache-Control': '_public, max-age=604800, immutable',
     },
   );
 }
@@ -121,7 +121,7 @@ Response _mulHandler(Request request, String a, String b) {
     _jsonEncode({'a': aNum, 'b': bNum, 'mul': aNum * bNum}),
     headers: {
       ..._jsonHeaders,
-      'Cache-Control': 'public, max-age=604800, immutable',
+      'Cache-Control': '_public, max-age=604800, immutable',
     },
   );
 }
